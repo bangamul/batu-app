@@ -69,9 +69,7 @@ defineOptions({ name: 'DetailBeritaPage' })
         <p style="color: gray; font-size: 0.9rem; margin-bottom: 1rem;">
           {{ selected.date }}
         </p>
-        <p style="line-height: 1.6;">
-          {{ selected.content }}
-        </p>
+        <div style="line-height: 1.6;" v-html="selected.content" />
       </div>
 
       <div v-else>

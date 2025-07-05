@@ -44,6 +44,14 @@ const banners = [
   },
 ]
 
+const getLoopedBanners = computed(() => {
+  const raw = [...banners]
+  while (raw.length < 5) {
+    raw.push(...banners)
+  }
+  return raw.slice(0, 5) // jaga performa
+})
+
 const openLink = (url: string) => {
   if (url.startsWith('http')) {
     window.open(url, '_blank')
@@ -164,12 +172,12 @@ const newsList = computed(() =>
             :modules="[Autoplay, Pagination]"
             :spaceBetween="10"
             :slidesPerView="1"
-            :loop="banners.length > 3"
+            :loop="true"
             :autoplay="{ delay: 5000 }"
             :pagination="{ clickable: true }"
           >
             <SwiperSlide
-              v-for="(banner, index) in banners"
+              v-for="(banner, index) in getLoopedBanners"
               :key="index"
               @click="openLink(banner.link)"
               style="cursor: pointer;"
