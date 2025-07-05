@@ -1,72 +1,47 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButton,
-  IonImg,
-  IonLabel,
-  IonSpinner,
-  IonBackButton,
-  IonButtons
+  IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
+  IonButton, IonButtons, IonBackButton, IonImg, IonCard, IonCardHeader, IonCardTitle, IonCardContent,
+  IonSpinner
 } from '@ionic/vue'
 
-defineOptions({ name: 'CekJenisBatuPage' })
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 
-const model = ref<any>(null)
-const selectedImage = ref<string | null>(null)
-const hasilPrediksi = ref<string | null>(null)
+defineOptions({ name: 'ScanPage' })
+
+const photo = ref('')
+const result = ref<{ name: string; desc: string } | null>(null)
 const loading = ref(false)
 
-const modelURL = '/model/model.json'
-const metadataURL = '/model/metadata.json'
+const scanBatu = async () => {
+  const image = await Camera.getPhoto({
+    quality: 70,
+    allowEditing: false,
+    resultType: CameraResultType.DataUrl,
+    source: CameraSource.Camera,
+  }).catch(() => null)
 
-onMounted(async () => {
-  try {
-    console.log('⏳ Loading model...')
-    const tmImage = (window as any).tmImage
-    model.value = await tmImage.load(modelURL, metadataURL)
-    console.log('✅ Model loaded')
-  } catch (err) {
-    console.error('❌ Gagal load model:', err)
-  }
-})
+  if (!image?.dataUrl) return
 
-const onFileChange = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const file = target.files?.[0]
-  if (file) {
-    selectedImage.value = URL.createObjectURL(file)
-    hasilPrediksi.value = null
-  }
-}
-
-const prediksiAI = async () => {
-  if (!model.value || !selectedImage.value) {
-    console.error('❌ Model atau gambar belum siap', model.value, selectedImage.value)
-    return
-  }
-
-  const imageElement = new Image()
-  imageElement.crossOrigin = 'anonymous'
-  imageElement.src = selectedImage.value
-
-  await new Promise((resolve) => {
-    imageElement.onload = resolve
-  })
+  photo.value = image.dataUrl
+  loading.value = true
+  result.value = null
 
   try {
-    loading.value = true
-    console.log('🔍 Memulai prediksi...')
-    const prediction = await model.value.predict(imageElement)
-    console.log('📊 Hasil prediksi:', prediction)
-    const top = prediction.sort((a, b) => b.probability - a.probability)[0]
-    hasilPrediksi.value = `Kemungkinan besar ini adalah batu ${top.className} (${(top.probability * 100).toFixed(2)}%)`
-  } catch (err) {
-    console.error('❌ Gagal prediksi:', err)
+    const res = await fetch('https://perspektiv.my.id/batu/api/identify_batu.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: photo.value })
+    })
+
+    const json = await res.json()
+    result.value = json
+  } catch (e) {
+    result.value = {
+      name: 'Tidak diketahui',
+      desc: 'Gagal mengidentifikasi batu. Coba lagi nanti.'
+    }
   } finally {
     loading.value = false
   }
@@ -80,65 +55,35 @@ const prediksiAI = async () => {
         <ion-buttons slot="start">
           <ion-back-button default-href="/" />
         </ion-buttons>
-        <ion-title>Cek Jenis Batu</ion-title>
+        <ion-title>Scan Batu</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content class="ion-padding">
-      <div class="upload-box">
-        <input type="file" accept="image/*" @change="onFileChange" />
+      <ion-button expand="block" @click="scanBatu">
+        📷 Ambil Foto Batu
+      </ion-button>
+
+      <div v-if="photo" style="text-align: center; margin: 1rem 0;">
+        <ion-img
+          :src="photo"
+          style="max-height: 240px; object-fit: contain; border-radius: 12px;"
+        />
       </div>
 
-      <div v-if="selectedImage" class="preview-box">
-        <ion-img :src="selectedImage" />
-        <ion-button
-        expand="block"
-        color="success"
-        class="ion-margin-top"
-        :disabled="loading"
-        @click="prediksiAI"
-        >
-          <ion-spinner v-if="loading" name="dots" />
-          <template v-else>Cek Jenis Batu</template>
-        </ion-button>
+      <div v-if="loading" style="text-align: center; margin-top: 1rem;">
+        <ion-spinner name="dots" />
+        <p style="margin-top: 0.5rem;">Mengidentifikasi batu...</p>
       </div>
 
-      <div v-if="hasilPrediksi" class="hasil-box">
-        <ion-label>{{ hasilPrediksi }}</ion-label>
-      </div>
+      <ion-card v-if="result">
+        <ion-card-header>
+          <ion-card-title>{{ result.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ result.desc }}</p>
+        </ion-card-content>
+      </ion-card>
     </ion-content>
   </ion-page>
 </template>
-
-<style scoped>
-.upload-box {
-  margin-bottom: 1rem;
-}
-
-.preview-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.preview-box ion-img {
-  width: 100%;
-  max-width: 300px;
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: #fff;
-}
-
-.hasil-box {
-  margin-top: 1rem;
-  background: #eef2ff;
-  padding: 1rem;
-  border-radius: 10px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-}
-</style>
