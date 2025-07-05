@@ -108,7 +108,7 @@ const submitBatu = async () => {
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar style="--background: #6366f1; --color: #fff;">
         <ion-buttons slot="start">
           <ion-back-button default-href="/" />
         </ion-buttons>

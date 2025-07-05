@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
-  IonInput, IonTextarea, IonButton, IonLabel, IonItem,
-  IonList, IonToast, IonImg, IonBackButton, IonButtons, IonProgressBar
+  IonBackButton, IonButtons
 } from '@ionic/vue'
 
 defineOptions({ name: 'ScanPage' })
@@ -10,7 +9,7 @@ defineOptions({ name: 'ScanPage' })
 <template>
     <ion-page>
         <ion-header>
-          <ion-toolbar color="primary">
+          <ion-toolbar style="--background: #6366f1; --color: #fff;">
             <ion-buttons slot="start">
             <ion-back-button default-href="/" />
             </ion-buttons>

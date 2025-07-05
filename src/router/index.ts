@@ -48,6 +48,8 @@ const routes = [
   { path: '/admin', component: () => import('../pages/Admin.vue') },
   { path: '/cek', component: () => import('../pages/CekJenisBatu.vue') },
   { path: '/daftarbatu', component: () => import('../pages/DaftarBatu.vue') },
+  { path: '/berita', component: () => import('../pages/Berita.vue') },
+  { path: '/berita/:id', component: () => import('../pages/berita/[id].vue') },
 ];
 
 const router = createRouter({

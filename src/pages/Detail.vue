@@ -8,7 +8,7 @@ import {
 } from '@ionic/vue'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import SwiperCore, { Pagination, Zoom } from 'swiper/modules'
+import { Pagination, Zoom } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/zoom'
@@ -64,7 +64,7 @@ onMounted(async () => {
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar style="--background: #6366f1; --color: #fff;">
         <ion-buttons slot="start">
           <ion-back-button default-href="/daftarbatu" />
         </ion-buttons>
