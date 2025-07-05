@@ -48,7 +48,7 @@ defineOptions({ name: 'DetailBeritaPage' })
         <ion-buttons slot="start">
           <ion-back-button default-href="/berita" />
         </ion-buttons>
-        <ion-title>Berita</ion-title>
+        <ion-title v-if="selected">{{ selected.title }}</ion-title>
       </ion-toolbar>
     </ion-header>
 
