@@ -108,7 +108,7 @@ const submitBatu = async () => {
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar style="--background: #6366f1; --color: #fff;">
+      <ion-toolbar style="--background: #6366f1; --color: #fff; padding-top: 20px;">
         <ion-buttons slot="start">
           <ion-back-button default-href="/" />
         </ion-buttons>
@@ -166,6 +166,7 @@ const submitBatu = async () => {
         class="ion-margin-top"
         @click="submitBatu"
         :disabled="isUploading"
+        style="--background: #6366f1; --color: #fff;"
       >
         Simpan
       </ion-button>

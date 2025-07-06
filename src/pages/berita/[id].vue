@@ -44,7 +44,7 @@ defineOptions({ name: 'DetailBeritaPage' })
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar style="--background: #6366f1; --color: #fff;">
+      <ion-toolbar style="--background: #6366f1; --color: #fff; padding-top: 20px;">
         <ion-buttons slot="start">
           <ion-back-button default-href="/berita" />
         </ion-buttons>

@@ -100,7 +100,7 @@ const newsList = computed(() =>
 <template>
   <ion-page>
     <ion-content class="ion-padding" style="--background: linear-gradient(to bottom, #f5f3ff, #ede9fe);">
-      <div class="date">{{ currentDate }}</div>
+      <div class="date" style="padding-top: 20px;">{{ currentDate }}</div>
       <h1 style="font-weight: 600; margin-bottom: 4px;">Batu Koleksi</h1>
       <p class="greeting">Selamat datang! Aplikasi ini membantu kamu mengelola koleksi batu akik dan permata dengan mudah</p>
 
