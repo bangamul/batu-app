@@ -21,18 +21,16 @@ const id = route.params.id as string
 const batu = ref<any>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
-
 const videoRef = ref<HTMLVideoElement | null>(null)
 
 const handleSlideChange = (swiper: any) => {
   const isVideoSlide = swiper.realIndex === 1
-
   if (videoRef.value) {
     if (isVideoSlide) {
       videoRef.value.currentTime = 0
       videoRef.value.muted = true
-      videoRef.value.play().catch(err => {
-        console.warn('Autoplay failed:', err)
+      videoRef.value.play().catch((err) => {
+        console.warn('Autoplay gagal:', err)
       })
     } else {
       videoRef.value.pause()
@@ -52,6 +50,7 @@ const onSwiper = (swiper: any) => {
 onMounted(async () => {
   try {
     const res = await fetch(`https://perspektiv.my.id/batu/api/detail_batu.php?id=${id}`)
+    if (!res.ok) throw new Error('Data tidak ditemukan')
     batu.value = await res.json()
   } catch (e) {
     error.value = 'Gagal mengambil data.'
@@ -77,7 +76,6 @@ onMounted(async () => {
       <div v-else-if="error">{{ error }}</div>
 
       <ion-card v-else>
-        <!-- Swiper Carousel with Zoom -->
         <Swiper
           :modules="[Pagination, Zoom]"
           :pagination="{ clickable: true }"
@@ -86,24 +84,14 @@ onMounted(async () => {
           style="height: 300px;"
           @swiper="onSwiper"
         >
-          <!-- Gambar dengan Zoom -->
           <SwiperSlide>
-            <div
-              class="swiper-zoom-container"
-              style="display: flex; justify-content: center; align-items: center; height: 100%; overflow: hidden;"
-            >
-              <img
-                :src="`https://perspektiv.my.id/${batu.foto}`"
-                style="height: 100%; width: auto; object-fit: contain;"
-              />
+            <div class="swiper-zoom-container" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+              <img :src="`https://perspektiv.my.id/${batu.foto}`" style="height: 100%; width: auto; object-fit: contain;" />
             </div>
           </SwiperSlide>
 
-          <!-- Video (tidak di-zoom) -->
           <SwiperSlide v-if="batu.video360">
-            <div
-              style="display: flex; justify-content: center; align-items: center; height: 100%; overflow: hidden;"
-            >
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
               <video
                 ref="videoRef"
                 muted
@@ -112,13 +100,12 @@ onMounted(async () => {
                 style="height: 100%; width: auto; border-radius: 12px;"
               >
                 <source :src="`https://perspektiv.my.id/${batu.video360}`" type="video/mp4" />
-                Browser lo tidak mendukung video.
+                Browser tidak mendukung video.
               </video>
             </div>
           </SwiperSlide>
         </Swiper>
 
-        <!-- Info -->
         <ion-card-header>
           <ion-card-title>{{ batu.nama }}</ion-card-title>
         </ion-card-header>

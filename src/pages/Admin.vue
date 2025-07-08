@@ -52,14 +52,27 @@ const submitBatu = async () => {
     return
   }
 
+  // Format deskripsi ke HTML <p> tiap baris
+  const deskripsiFormatted = deskripsi.value
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => `<p>${line}</p>`)
+    .join('\n')
+
   const formData = new FormData()
   formData.append('nama', nama.value)
   formData.append('jenis', jenis.value)
   formData.append('asal', asal.value)
-  formData.append('deskripsi', deskripsi.value)
+  formData.append('deskripsi', deskripsiFormatted)
   formData.append('foto', fotoFile.value)
   if (videoFile.value) {
     formData.append('video360', videoFile.value)
+  }
+
+  // Log isi form sebelum kirim
+  for (const [key, val] of formData.entries()) {
+    console.log(`📦 FormData: ${key} =`, val)
   }
 
   isUploading.value = true
@@ -76,17 +89,23 @@ const submitBatu = async () => {
 
     xhr.onload = () => {
       isUploading.value = false
-      if (xhr.status === 200) {
+      console.log('📨 Server responded with:', xhr.responseText)
+
+      try {
         const res = JSON.parse(xhr.responseText)
+        console.log('✅ Parsed JSON:', res)
+
         if (res.success) {
           toastMessage.value = '✅ Batu berhasil ditambahkan!'
           resetForm()
         } else {
-          toastMessage.value = '❌ Gagal menambahkan batu.'
+          toastMessage.value = `❌ ${res.message}`
         }
-      } else {
-        toastMessage.value = '❌ Gagal mengirim data.'
+      } catch (err) {
+        toastMessage.value = '❌ Respon server tidak bisa dibaca.'
+        console.error('⚠️ Gagal parse JSON:', xhr.responseText)
       }
+
       showToast.value = true
     }
 
@@ -97,10 +116,11 @@ const submitBatu = async () => {
     }
 
     xhr.send(formData)
-  } catch {
+  } catch (err) {
     isUploading.value = false
     toastMessage.value = '❌ Koneksi gagal.'
     showToast.value = true
+    console.error('❌ Koneksi error:', err)
   }
 }
 </script>
@@ -120,36 +140,44 @@ const submitBatu = async () => {
       <ion-list>
         <ion-item>
           <ion-label position="floating">Nama Batu</ion-label>
-          <ion-input v-model="nama" />
+          <ion-input v-model="nama" :readonly="isUploading" />
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Jenis</ion-label>
-          <ion-input v-model="jenis" />
+          <ion-input v-model="jenis" :readonly="isUploading" />
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Asal</ion-label>
-          <ion-input v-model="asal" />
+          <ion-input v-model="asal" :readonly="isUploading" />
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Deskripsi</ion-label>
-          <ion-textarea v-model="deskripsi" auto-grow />
+          <ion-textarea v-model="deskripsi" auto-grow :readonly="isUploading" />
         </ion-item>
 
         <ion-item>
           <ion-label>Upload Foto</ion-label>
-          <input type="file" accept="image/*" @change="onFotoChange" style="margin-left: 1rem;" />
-        </ion-item>
-
-        <ion-item v-if="previewFoto">
-          <ion-img :src="previewFoto" style="width: 100%; max-height: 200px; object-fit: contain;" />
+          <input
+            type="file"
+            accept="image/*"
+            @change="onFotoChange"
+            :disabled="isUploading"
+            style="margin-left: 1rem;"
+          />
         </ion-item>
 
         <ion-item>
           <ion-label>Upload Video 360 (opsional)</ion-label>
-          <input type="file" accept="video/mp4" @change="onVideoChange" style="margin-left: 1rem;" />
+          <input
+            type="file"
+            accept="video/mp4"
+            @change="onVideoChange"
+            :disabled="isUploading"
+            style="margin-left: 1rem;"
+          />
         </ion-item>
       </ion-list>
 
@@ -174,7 +202,7 @@ const submitBatu = async () => {
       <ion-toast
         :is-open="showToast"
         :message="toastMessage"
-        duration="2500"
+        duration="3000"
         @didDismiss="showToast = false"
       />
     </ion-content>

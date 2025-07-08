@@ -6,6 +6,10 @@ import { BadgeCheck, Gem, Group, PackagePlus } from 'lucide-vue-next'
 import SkeletonNewsCard from '@/components/SkeletonNewsCard.vue'
 // import berita from '@/data/mock/berita'
 
+import { useQrScanner } from '@/composables/useQrScanner'
+
+const { startScan } = useQrScanner()
+
 interface Beritas {
   id: number
   title: string
@@ -131,39 +135,11 @@ const newsList = computed(() =>
           <p>Koleksi</p>
         </div>
         <div>
-          <div class="verification" @click="$router.push('/scan')">
+          <div class="verification" @click="startScan">
             <BadgeCheck class="menu-icon" />
           </div>
           <p>Verifikasi</p>
         </div>
-        <!-- <MetricCard
-          title="Scan QR"
-          value="📷"
-          updated="Arahkan ke kode"
-          color="blue"
-          @click="$router.push('/scan')"
-        /> -->
-        <!-- <MetricCard
-          title="Cek Jenis Batu"
-          value="🔍"
-          updated="Upload foto"
-          color="purple"
-          @click="$router.push('/cek')"
-        />
-        <MetricCard
-          title="Tambah Koleksi Batu"
-          value="➕"
-          updated="Masukkan data"
-          color="purple-light"
-          @click="$router.push('/admin')"
-        />
-        <MetricCard
-          title="Daftar Batu Guw"
-          value="💎"
-          updated="Lihat Katalog"
-          color="dark"
-          @click="$router.push('/daftarbatu')"
-        /> -->
       </div>
 
       <div style="margin: 24px 0px;">
