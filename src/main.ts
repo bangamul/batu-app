@@ -34,6 +34,8 @@ import '@ionic/vue/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// PWA elements will be loaded via script tag in index.html
+
 const app = createApp(App)
   .use(IonicVue)
   .use(router);

@@ -63,19 +63,36 @@ onMounted(async () => {
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar style="--background: #6366f1; --color: #fff; padding-top: 20px;">
+      <ion-toolbar style="--background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --color: #fff; padding-top: 20px;">
         <ion-buttons slot="start">
-          <ion-back-button default-href="/daftarbatu" />
+          <ion-back-button 
+            default-href="/daftarbatu" 
+            style="
+              --color: #fff;
+              --icon-color: #fff;
+              --icon-font-size: 18px;
+              --icon-margin-start: 4px;
+              --icon-margin-end: 4px;
+              --icon-padding-start: 4px;
+              --icon-padding-end: 4px;
+              --border-radius: 8px;
+              margin-left: 8px;
+            "
+          />
         </ion-buttons>
-        <ion-title>Detail Batu</ion-title>
+        <ion-title style="font-weight: 600; font-size: 18px;">Detail Batu</ion-title>
+        <ion-buttons slot="end">
+          <div style="width: 40px;"></div>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content class="ion-padding">
+    <ion-content style="--background: #f8fafc;">
+      <div style="max-width: 600px; margin: 0 auto; padding: 0 16px;">
       <div v-if="loading">Loading...</div>
       <div v-else-if="error">{{ error }}</div>
 
-      <ion-card v-else>
+      <ion-card v-else style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin: 20px 0;">
         <Swiper
           :modules="[Pagination, Zoom]"
           :pagination="{ clickable: true }"
@@ -115,6 +132,7 @@ onMounted(async () => {
           <div v-html="batu.deskripsi" style="margin-top: 0.5rem;" />
         </ion-card-content>
       </ion-card>
+      </div>
     </ion-content>
   </ion-page>
 </template>

@@ -42,15 +42,32 @@ onMounted(fetchData)
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar style="--background: #6366f1; --color: #fff; padding-top: 20px;">
+      <ion-toolbar style="--background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --color: #fff; padding-top: 20px;">
         <ion-buttons slot="start">
-          <ion-back-button default-href="/" />
+          <ion-back-button 
+            default-href="/" 
+            style="
+              --color: #fff;
+              --icon-color: #fff;
+              --icon-font-size: 18px;
+              --icon-margin-start: 4px;
+              --icon-margin-end: 4px;
+              --icon-padding-start: 4px;
+              --icon-padding-end: 4px;
+              --border-radius: 8px;
+              margin-left: 8px;
+            "
+          />
         </ion-buttons>
-        <ion-title>Daftar Batu Koleksi</ion-title>
+        <ion-title style="font-weight: 600; font-size: 18px;">Daftar Batu Koleksi</ion-title>
+        <ion-buttons slot="end">
+          <div style="width: 40px;"></div>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content class="ion-padding">
+    <ion-content style="--background: #f8fafc;">
+      <div style="max-width: 600px; margin: 24px auto 0; padding: 0 16px;">
       <div class="batu-grid">
         <ion-card
           v-for="batu in daftarBatu"
@@ -75,6 +92,7 @@ onMounted(fetchData)
       <div v-if="!daftarBatu.length" class="kosong">
         <ion-label>Belum ada data batu.</ion-label>
       </div>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -88,8 +106,14 @@ onMounted(fetchData)
 
 .batu-card {
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.batu-card:hover {
+  transform: translateY(-2px);
 }
 ion-img {
   height: 140px;

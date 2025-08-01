@@ -99,15 +99,32 @@ const openLink = (id: number) => {
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar style="--background: #6366f1; --color: #fff; padding-top: 20px;">
+      <ion-toolbar style="--background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --color: #fff; padding-top: 20px;">
         <ion-buttons slot="start">
-          <ion-back-button default-href="/" />
+          <ion-back-button 
+            default-href="/" 
+            style="
+              --color: #fff;
+              --icon-color: #fff;
+              --icon-font-size: 18px;
+              --icon-margin-start: 4px;
+              --icon-margin-end: 4px;
+              --icon-padding-start: 4px;
+              --icon-padding-end: 4px;
+              --border-radius: 8px;
+              margin-left: 8px;
+            "
+          />
         </ion-buttons>
-        <ion-title>Berita</ion-title>
+        <ion-title style="font-weight: 600; font-size: 18px;">Berita</ion-title>
+        <ion-buttons slot="end">
+          <div style="width: 40px;"></div>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content class="ion-padding">
+    <ion-content style="--background: #f8fafc;">
+      <div style="max-width: 600px; margin: 0 auto; padding: 0 16px;">
       <h1 class="page-title">Berita Terbaru</h1>
 
       <!-- Filter -->
@@ -174,6 +191,7 @@ const openLink = (id: number) => {
           </ion-button>
         </div>
       </div>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -199,11 +217,13 @@ const openLink = (id: number) => {
   display: flex;
   gap: 12px;
   background: white;
-  border-radius: 4px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.2s ease;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 .news-card:hover {
   transform: scale(1.01);

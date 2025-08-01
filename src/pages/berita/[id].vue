@@ -44,15 +44,32 @@ defineOptions({ name: 'DetailBeritaPage' })
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar style="--background: #6366f1; --color: #fff; padding-top: 20px;">
+      <ion-toolbar style="--background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --color: #fff; padding-top: 20px;">
         <ion-buttons slot="start">
-          <ion-back-button default-href="/berita" />
+          <ion-back-button 
+            default-href="/berita" 
+            style="
+              --color: #fff;
+              --icon-color: #fff;
+              --icon-font-size: 18px;
+              --icon-margin-start: 4px;
+              --icon-margin-end: 4px;
+              --icon-padding-start: 4px;
+              --icon-padding-end: 4px;
+              --border-radius: 8px;
+              margin-left: 8px;
+            "
+          />
         </ion-buttons>
-        <ion-title v-if="selected">{{ selected.title }}</ion-title>
+        <ion-title v-if="selected" style="font-weight: 600; font-size: 18px;">{{ selected.title }}</ion-title>
+        <ion-buttons slot="end">
+          <div style="width: 40px;"></div>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content class="ion-padding">
+    <ion-content style="--background: #f8fafc;">
+      <div style="max-width: 600px; margin: 24px auto 0; padding: 0 16px;">
       <div v-if="loading">
         <p>Loading berita...</p>
       </div>
@@ -74,6 +91,7 @@ defineOptions({ name: 'DetailBeritaPage' })
 
       <div v-else>
         <p>Berita tidak ditemukan.</p>
+      </div>
       </div>
     </ion-content>
   </ion-page>

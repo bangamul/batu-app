@@ -1,11 +1,26 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { IonPage, IonContent, IonButton } from '@ionic/vue'
-// import MetricCard from '@/components/MetricCard.vue'
-import { BadgeCheck, Gem, Group, PackagePlus } from 'lucide-vue-next'
+import { 
+  IonPage, 
+  IonContent, 
+  IonButton, 
+  IonCard, 
+  IonCardContent,
+  IonIcon,
+  IonHeader,
+  IonToolbar,
+  IonTitle
+} from '@ionic/vue'
+import { 
+  BadgeCheck, 
+  Gem, 
+  Group, 
+  PackagePlus,
+  Calendar,
+  ArrowRight,
+  Newspaper
+} from 'lucide-vue-next'
 import SkeletonNewsCard from '@/components/SkeletonNewsCard.vue'
-// import berita from '@/data/mock/berita'
-
 import { useQrScanner } from '@/composables/useQrScanner'
 
 const { startScan } = useQrScanner()
@@ -103,54 +118,104 @@ const newsList = computed(() =>
 
 <template>
   <ion-page>
-    <ion-content class="ion-padding" style="--background: linear-gradient(to bottom, #f5f3ff, #ede9fe);">
-      <div class="date" style="padding-top: 20px;">{{ currentDate }}</div>
-      <h1 style="font-weight: 600; margin-bottom: 4px;">Batu Koleksi</h1>
-      <p class="greeting">Selamat datang! Aplikasi ini membantu kamu mengelola koleksi batu akik dan permata dengan mudah</p>
+    <ion-header>
+      <ion-toolbar style="--background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --color: #fff; padding-top: 20px;">
+        <ion-title style="font-weight: 600; font-size: 18px;">
+          <Gem style="width: 24px; height: 24px; margin-right: 8px; display: inline-block; vertical-align: middle;" />
+          Batu Koleksi
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
 
+    <ion-content style="--background: #f8fafc;">
+      <div class="container" style="max-width: 600px; margin: 0 auto; padding: 0 16px;">
+        <!-- Date Header -->
+        <ion-card style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin: 20px 0;">
+          <ion-cardContent style="padding: 16px;">
+            <div class="date-header">
+              <Calendar style="width: 20px; height: 20px; color: #6366f1;" />
+              <span class="date-text">{{ currentDate }}</span>
+            </div>
+            <h1 class="main-title">Selamat Datang! 👋</h1>
+            <p class="greeting">
+              Aplikasi ini membantu kamu mengelola koleksi batu akik dan permata dengan mudah dan aman
+            </p>
+          </ion-cardContent>
+        </ion-card>
+
+        <!-- Health Card -->
+        <ion-card style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin: 20px 0;">
+          <ion-cardContent style="padding: 20px;">
       <div class="health-card">
-        <Gem class="icon" />
-        <div class="text">
-          <p>
+              <div class="health-icon">
+                <Gem style="width: 48px; height: 48px; color: #fbbf24;" />
+              </div>
+              <div class="health-content">
+                <h3 style="margin: 0 0 8px 0; color: #1e293b; font-weight: 600;">Cek Jenis Batu</h3>
+                <p style="margin: 0 0 16px 0; color: #64748b; font-size: 14px; line-height: 1.5;">
             Ingin tahu jenis batu kamu? Klik tombol di bawah untuk cek sekarang.
           </p>
-          <button class="check-button" @click="$router.push('/cek')">
-            Cek Jenis Batu
-          </button>
+                <ion-button
+                  fill="solid"
+                  size="small"
+                  @click="$router.push('/cek')"
+                  style="
+                    --background: linear-gradient(135deg, #fbbf24, #f59e0b);
+                    --color: #1e293b;
+                    --border-radius: 12px;
+                    font-weight: 600;
+                    height: 40px;
+                  "
+                >
+                  Cek Sekarang
+                  <ArrowRight style="width: 16px; height: 16px; margin-left: 8px;" />
+                </ion-button>
         </div>
       </div>
+          </ion-cardContent>
+        </ion-card>
 
-      <h2 class="metrics-title">Menu Utama</h2>
-      <div class="metrics-grid">
-        <div>
-          <div class="addnew" @click="$router.push('/admin')">
-            <PackagePlus class="menu-icon" />
+        <!-- Menu Grid -->
+        <ion-card style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin: 20px 0;">
+          <ion-cardContent style="padding: 20px;">
+            <h2 class="section-title">
+              <PackagePlus style="width: 20px; height: 20px; margin-right: 8px; color: #6366f1;" />
+              Menu Utama
+            </h2>
+            <div class="menu-grid">
+              <div class="menu-item" @click="$router.push('/admin')">
+                <div class="menu-icon addnew">
+                  <PackagePlus style="width: 32px; height: 32px;" />
           </div>
-          <p>tambah data</p>
+                <p class="menu-label">Tambah Data</p>
         </div>
-        <div>
-          <div class="collection" @click="$router.push('/daftarbatu')">
-            <Group class="menu-icon" />
+              <div class="menu-item" @click="$router.push('/daftarbatu')">
+                <div class="menu-icon collection">
+                  <Group style="width: 32px; height: 32px;" />
           </div>
-          <p>Koleksi</p>
+                <p class="menu-label">Koleksi</p>
         </div>
-        <div>
-          <div class="verification" @click="startScan">
-            <BadgeCheck class="menu-icon" />
+              <div class="menu-item" @click="startScan">
+                <div class="menu-icon verification">
+                  <BadgeCheck style="width: 32px; height: 32px;" />
           </div>
-          <p>Verifikasi</p>
+                <p class="menu-label">Verifikasi</p>
         </div>
       </div>
+          </ion-cardContent>
+        </ion-card>
 
-      <div style="margin: 24px 0px;">
-        <div>
+        <!-- Banner Slider -->
+        <ion-card style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin: 20px 0; overflow: hidden;">
+          <ion-cardContent style="padding: 0;">
           <Swiper
             :modules="[Autoplay, Pagination]"
-            :spaceBetween="10"
+              :spaceBetween="0"
             :slidesPerView="1"
             :loop="true"
             :autoplay="{ delay: 5000 }"
             :pagination="{ clickable: true }"
+              style="height: 200px;"
           >
             <SwiperSlide
               v-for="(banner, index) in getLoopedBanners"
@@ -161,21 +226,30 @@ const newsList = computed(() =>
               <img
                 :src="banner.image"
                 alt="Banner"
-                style="width: 100%; height: 160px; object-fit: cover;"
+                  style="width: 100%; height: 200px; object-fit: cover;"
               />
             </SwiperSlide>
           </Swiper>
-        </div>
-      </div>
+          </ion-cardContent>
+        </ion-card>
 
-      <div style="margin-bottom: 24px;">
-        <h2 class="metrics-title">Berita Terbaru</h2>
+        <!-- News Section -->
+        <ion-card style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin: 20px 0;">
+          <ion-cardContent style="padding: 20px;">
+            <h2 class="section-title">
+              <Newspaper style="width: 20px; height: 20px; margin-right: 8px; color: #6366f1;" />
+              Berita Terbaru
+            </h2>
+            
         <div v-if="loading">
           <SkeletonNewsCard v-for="n in 3" :key="n" />
         </div>
         <div v-else>
           <div v-if="newsList.length === 0">
-            <p style="color: #999;">Belum ada berita.</p>
+                <div class="empty-state">
+                  <Newspaper style="width: 48px; height: 48px; color: #94a3b8; margin-bottom: 16px;" />
+                  <p style="color: #64748b; margin: 0; font-size: 14px;">Belum ada berita tersedia.</p>
+                </div>
           </div>
           <div v-else class="news-section">
             <div
@@ -185,238 +259,263 @@ const newsList = computed(() =>
               @click="openLink(news.link)"
             >
               <img :src="news.image" alt="news" class="news-image" />
-              <div class="news-text">
-                <p>{{ news.title }}</p>
+                  <div class="news-content">
+                    <h4 class="news-title">{{ news.title }}</h4>
+                    <div class="news-meta">
+                      <span class="news-date">Berita Terbaru</span>
+                    </div>
               </div>
             </div>
-            <div style="margin-top: 12px;">
+                
               <ion-button
                 expand="block"
                 fill="clear"
                 size="small"
+                  @click="$router.push('/berita')"
                 style="
-                  background-color: #6366f1 !important;
-                  color: #fff;
+                    --color: #6366f1;
                   font-weight: 600;
-                  border-radius: 6px;
-                  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-                  padding: 8px;
+                    margin-top: 16px;
+                    --border-radius: 12px;
+                    height: 44px;
                 "
-                @click="$router.push('/berita')"
               >
-                Lihat Semua Berita →
+                  Lihat Semua Berita
+                  <ArrowRight style="width: 16px; height: 16px; margin-left: 8px;" />
               </ion-button>
             </div>
           </div>
-        </div>
+          </ion-cardContent>
+        </ion-card>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <style scoped>
-.metrics-grid p {
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-  text-transform: capitalize;
-  margin: 8px 0px 0px 0px;
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
-.menu-icon {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.3));
-}
-.addnew {
-  padding: 4px;
-  color: #fff;
-  background: linear-gradient(135deg, #fc9eff, #fd5ffc);
-  padding: 1rem;
-  justify-items: center;
-  vertical-align: middle;
+
+.date-header {
+  display: flex;
   align-items: center;
-  text-align: center;
-  border-radius: 8px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
-.collection {
-  padding: 4px;
-  color: #fff;
-  background: linear-gradient(135deg, #fdca9c, #ffa639);
-  padding: 1rem;
-  justify-items: center;
-  vertical-align: middle;
-  align-items: center;
-  text-align: center;
-  border-radius: 8px;
-}
-.verification {
-  padding: 4px;
-  color: #fff;
-  background: linear-gradient(135deg, #2dc653, #38b000);
-  padding: 1rem;
-  justify-items: center;
-  vertical-align: middle;
-  align-items: center;
-  text-align: center;
-  border-radius: 8px;
-}
-.date {
-  text-transform: uppercase;
+
+.date-text {
   color: #6366f1;
-  font-size: 0.8rem;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
-p.greeting {
-  color: #454545;
-  font-size: 12px;
-  line-height: 150%;
-  margin-top: 0px;
+
+.main-title {
+  font-weight: 700;
+  font-size: 24px;
+  margin: 0 0 8px 0;
+  color: #1e293b;
 }
+
+.greeting {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
 .health-card {
   display: flex;
-  align-items: center; /* icon dan text sama tinggi tengah */
-  gap: 1rem;
-  background: linear-gradient(135deg, #9d7afb, #7846ff);
-  padding: 1rem;
-  border-radius: 1rem;
-  margin: 1rem 0;
-  color: white;
-  font-size: 0.95rem;
+  align-items: flex-start;
+  gap: 16px;
 }
-.health-card .icon {
-  width: 72px;
-  height: 72px;
+
+.health-icon {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 12px;
+  border-radius: 12px;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5));
+}
+
+.health-content {
+  flex: 1;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 20px 0;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.menu-item {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.menu-item:hover {
+  transform: translateY(-2px);
+}
+
+.menu-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 16px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
-.health-card .text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+.menu-icon.addnew {
+  background: linear-gradient(135deg, #fc9eff, #fd5ffc);
 }
-.health-card .check-button {
-  margin-top: 0.5rem;
-  background-color: #facc15;
-  color: #333;
+
+.menu-icon.collection {
+  background: linear-gradient(135deg, #fdca9c, #ffa639);
+}
+
+.menu-icon.verification {
+  background: linear-gradient(135deg, #2dc653, #38b000);
+}
+
+.menu-label {
+  font-size: 12px;
   font-weight: 600;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  width: fit-content;
-  transition: background-color 0.2s ease;
-}
-.health-card .check-button:hover {
-  background-color: #eab308;
-}
-.health-card .text p {
-  margin: 0px !important;
-  padding: 0px !important;
-  font-size: 14px;
-}
-.metrics-title {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-.purple-light-bg {
-  background: linear-gradient(to bottom, #f5f3ff, #ede9fe);
-  min-height: 100%;
-}
-::v-deep(.swiper-pagination) {
-  position: static !important;
-  margin-top: 12px;
-  text-align: center;
+  color: #374151;
+  margin: 0;
+  text-transform: capitalize;
 }
 
-::v-deep(.swiper-pagination-bullet) {
-  width: 20px;
-  height: 6px;
-  border-radius: 4px;
-  background-color: #D1D5DB;
-  opacity: 1;
-  margin: 0 4px;
-  display: inline-block;
-}
-
-::v-deep(.swiper-pagination-bullet-active) {
-  background-color: #4B5563 !important;
-}
 .news-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 1rem;
+  gap: 16px;
 }
 
 .news-card {
   display: flex;
-  gap: 12px;
-  background: white;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  gap: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 16px;
   cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.news-card:hover {
-  transform: scale(1.01);
-}
-.news-image {
-  width: 96px;
-  height: 72px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-.news-text {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding-right: 12px;
-}
-.news-text p {
-  margin: 0;
-  font-weight: 600;
-  font-size: 14px;
-  color: #333;
-}
-/* Skeleton effect */
-.skeleton {
-  pointer-events: none;
-  opacity: 0.6;
-}
-.skeleton-box {
-  background: linear-gradient(-90deg, #eee, #f5f5f5, #eee);
-  background-size: 400% 400%;
-  animation: shimmer 1.2s ease-in-out infinite;
-  border-radius: 4px;
-}
-.skeleton-line {
-  height: 14px;
-  width: 100%;
-  background: linear-gradient(-90deg, #eee, #f5f5f5, #eee);
-  background-size: 400% 400%;
-  animation: shimmer 1.2s ease-in-out infinite;
-  border-radius: 4px;
-  margin-top: 12px;
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: 100% 0;
+.news-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border-color: #cbd5e1;
+}
+
+.news-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.news-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-title {
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.news-date {
+  font-size: 12px;
+  color: #64748b;
+  background: #e2e8f0;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* Swiper Customization */
+::v-deep(.swiper-pagination) {
+  position: absolute !important;
+  bottom: 16px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+::v-deep(.swiper-pagination-bullet) {
+  width: 24px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  margin: 0 4px;
+  transition: all 0.3s ease;
+}
+
+::v-deep(.swiper-pagination-bullet-active) {
+  background-color: #fff !important;
+  width: 32px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
   }
-  100% {
-    background-position: -100% 0;
+  
+  .menu-grid {
+    gap: 12px;
+  }
+  
+  .menu-icon {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .news-card {
+    padding: 12px;
+  }
+  
+  .news-image {
+    width: 70px;
+    height: 70px;
   }
 }
 </style>
